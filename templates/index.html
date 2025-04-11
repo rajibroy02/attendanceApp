@@ -1,0 +1,669 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Face Recognition Attendance</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--        input {-->
+<!--            margin: 10px;-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 8px 16px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #output-table {-->
+<!--            margin-top: 20px;-->
+<!--            border-collapse: collapse;-->
+<!--            width: 100%;-->
+<!--            max-width: 500px;-->
+<!--            margin-left: auto;-->
+<!--            margin-right: auto;-->
+<!--        }-->
+<!--        #output-table th, #output-table td {-->
+<!--            border: 1px solid black;-->
+<!--            padding: 8px;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <h2>Face Recognition Attendance</h2>-->
+<!--    <input type="file" id="imageInput" accept="image/*">-->
+<!--    <button onclick="uploadImage()">Upload & Recognize</button>-->
+
+<!--    <h3>Recognized Faces</h3>-->
+<!--    <table id="output-table">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Timestamp</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="output-body">-->
+<!--            &lt;!&ndash; Recognized names will be inserted here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--    <script>-->
+<!--        function uploadImage() {-->
+<!--            let fileInput = document.getElementById("imageInput");-->
+<!--            if (fileInput.files.length === 0) {-->
+<!--                alert("Please select an image.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            let file = fileInput.files[0];-->
+<!--            let formData = new FormData();-->
+<!--            formData.append("file", file);-->
+
+<!--            fetch("http://127.0.0.1:8000/recognize", {-->
+<!--                method: "POST",-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                updateTable(data.recognized_face, data.timestamp);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error("Error:", error);-->
+<!--                alert("Error recognizing the image.");-->
+<!--            });-->
+<!--        }-->
+
+<!--        function updateTable(names, timestamp) {-->
+<!--            let tableBody = document.getElementById("output-body");-->
+<!--            tableBody.innerHTML = ""; // Clear previous entries-->
+
+<!--            if (names.length === 0) {-->
+<!--                let row = `<tr><td colspan="2">No faces recognized.</td></tr>`;-->
+<!--                tableBody.innerHTML = row;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            names.forEach(name => {-->
+<!--                let row = `<tr><td>${name}</td><td>${timestamp}</td></tr>`;-->
+<!--                tableBody.innerHTML += row;-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Face Recognition Attendance</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--        input {-->
+<!--            margin: 10px;-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 8px 16px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #output-table {-->
+<!--            margin-top: 20px;-->
+<!--            border-collapse: collapse;-->
+<!--            width: 100%;-->
+<!--            max-width: 500px;-->
+<!--            margin-left: auto;-->
+<!--            margin-right: auto;-->
+<!--        }-->
+<!--        #output-table th, #output-table td {-->
+<!--            border: 1px solid black;-->
+<!--            padding: 8px;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <h2>Face Recognition Attendance</h2>-->
+<!--    <input type="file" id="imageInput" accept="image/*">-->
+<!--    <button onclick="uploadImage()">Upload & Recognize</button>-->
+
+<!--    <h3>Recognized Faces</h3>-->
+<!--    <table id="output-table">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Timestamp</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="output-body">-->
+<!--            &lt;!&ndash; Recognized names will be inserted here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--    <script>-->
+<!--        function uploadImage() {-->
+<!--            let fileInput = document.getElementById("imageInput");-->
+<!--            if (fileInput.files.length === 0) {-->
+<!--                alert("Please select an image.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            let file = fileInput.files[0];-->
+<!--            let formData = new FormData();-->
+<!--            formData.append("file", file);-->
+
+<!--            fetch("http://127.0.0.1:8000/recognize", {-->
+<!--                method: "POST",-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                updateTable(data.recognized_faces, data.timestamp);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error("Error:", error);-->
+<!--                alert("Error recognizing the image.");-->
+<!--            });-->
+<!--        }-->
+
+<!--        function updateTable(names, timestamp) {-->
+<!--            let tableBody = document.getElementById("output-body");-->
+<!--            tableBody.innerHTML = ""; // Clear previous entries-->
+
+<!--            if (names.length === 0) {-->
+<!--                let row = `<tr><td colspan="2">No faces recognized.</td></tr>`;-->
+<!--                tableBody.innerHTML = row;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            names.forEach(name => {-->
+<!--                let row = `<tr><td>${name}</td><td>${timestamp}</td></tr>`;-->
+<!--                tableBody.innerHTML += row;-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Face Recognition Attendance</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--        input {-->
+<!--            margin: 10px;-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 8px 16px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #output-table {-->
+<!--            margin-top: 20px;-->
+<!--            border-collapse: collapse;-->
+<!--            width: 100%;-->
+<!--            max-width: 500px;-->
+<!--            margin-left: auto;-->
+<!--            margin-right: auto;-->
+<!--        }-->
+<!--        #output-table th, #output-table td {-->
+<!--            border: 1px solid black;-->
+<!--            padding: 8px;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <h2>Face Recognition Attendance</h2>-->
+<!--    <input type="file" id="imageInput" accept="image/*">-->
+<!--    <button onclick="uploadImage()">Upload & Recognize</button>-->
+
+<!--    <h3>Recognized Faces</h3>-->
+<!--    <table id="output-table">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Timestamp</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="output-body">-->
+<!--            &lt;!&ndash; Recognized names will be appended here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--    <script>-->
+<!--        function uploadImage() {-->
+<!--            let fileInput = document.getElementById("imageInput");-->
+<!--            if (fileInput.files.length === 0) {-->
+<!--                alert("Please select an image.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            let file = fileInput.files[0];-->
+<!--            let formData = new FormData();-->
+<!--            formData.append("file", file);-->
+
+<!--            fetch("http://127.0.0.1:8000/recognize", {-->
+<!--                method: "POST",-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                appendToTable(data.recognized_face, data.timestamp);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error("Error:", error);-->
+<!--                alert("Error recognizing the image.");-->
+<!--            });-->
+<!--        }-->
+
+<!--        function appendToTable(names, timestamp) {-->
+<!--            let tableBody = document.getElementById("output-body");-->
+
+<!--            if (names.length === 0) {-->
+<!--                let row = `<tr><td colspan="2">No faces recognized.</td></tr>`;-->
+<!--                tableBody.innerHTML += row;  // Appending instead of replacing-->
+<!--                return;-->
+<!--            }-->
+
+<!--            names.forEach(name => {-->
+<!--                let row = `<tr><td>${name}</td><td>${timestamp}</td></tr>`;-->
+<!--                tableBody.innerHTML += row;  // Appends new rows instead of replacing-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        video {
+            width: 60%;
+            max-width: 600px;
+            border: 2px solid black;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #output-table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #output-table th, #output-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Face Recognition Attendance</h2>
+
+    <!-- Image Upload Section -->
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="uploadImage()">Upload & Recognize</button>
+    <br><br>
+
+    <!-- Webcam-Based Recognition Section -->
+    <video id="video" autoplay></video>
+    <br>
+    <button onclick="startRecognition()">Start Recognition</button>
+    <button onclick="stopRecognition()">Stop Recognition</button>
+
+    <h3>Recognized Faces</h3>
+    <table id="output-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="output-body">
+            <!-- Recognized names will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        let videoStream = null;
+        let recognitionInterval = null;
+        const video = document.getElementById("video");
+
+        // Function to upload image file for recognition
+        function uploadImage() {
+            let fileInput = document.getElementById("imageInput");
+            if (fileInput.files.length === 0) {
+                alert("Please select an image.");
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let formData = new FormData();
+            formData.append("file", file);
+
+            fetch("/recognize", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response:",data);
+                if (typeof data.recognized_faces === "string"){
+                    data.recognized_faces = [data.recognized_faces];
+                }
+                appendToTable(data.recognized_faces, data.timestamp);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error recognizing the image.");
+            });
+        }
+
+        // Start webcam feed
+        async function startCamera() {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = videoStream;
+            } catch (error) {
+                console.error("Error accessing webcam:", error);
+                alert("Could not access webcam.");
+            }
+        }
+
+        // Capture frame from video and send to FastAPI backend
+        function captureFrame() {
+            let canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            let ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob(sendFrame, "image/jpeg");
+        }
+
+        // Send frame to backend API for face recognition
+        function sendFrame(blob) {
+            let formData = new FormData();
+            formData.append("file", blob, "frame.jpg");
+
+            fetch("http://127.0.0.1:8000/recognize", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response:",data);
+                if (typeof data.recognized_faces === "string"){
+                    data.recognized_faces = [data.recognized_faces];
+                }
+                appendToTable(data.recognized_faces, data.timestamp);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error recognizing the image.")
+            });
+        }
+
+        // Append recognized faces to the table
+        function appendToTable(names, timestamp) {
+            let tableBody = document.getElementById("output-body");
+
+            if (names.length === 0) {
+                let row = `<tr><td colspan="2">No faces recognized.</td></tr>`;
+                tableBody.innerHTML += row;
+                return;
+            }
+
+            names.forEach(name => {
+                let row = `<tr><td>${name}</td><td>${timestamp}</td></tr>`;
+                tableBody.innerHTML += row;  // Append rows instead of overwriting
+            });
+        }
+
+        // Start recognition process
+        function startRecognition() {
+            if (!videoStream) {
+                alert("Starting camera...");
+                startCamera();
+            }
+
+            // Send a frame every 2 seconds
+            recognitionInterval = setInterval(captureFrame, 2000);
+        }
+
+        // Stop recognition process
+        function stopRecognition() {
+            clearInterval(recognitionInterval);
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                videoStream = null;
+            }
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Face Recognition Attendance</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--        video {-->
+<!--            width: 60%;-->
+<!--            max-width: 600px;-->
+<!--            border: 2px solid black;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 8px 16px;-->
+<!--            cursor: pointer;-->
+<!--            margin: 10px;-->
+<!--        }-->
+<!--        #output-table {-->
+<!--            margin-top: 20px;-->
+<!--            border-collapse: collapse;-->
+<!--            width: 100%;-->
+<!--            max-width: 600px;-->
+<!--            margin-left: auto;-->
+<!--            margin-right: auto;-->
+<!--        }-->
+<!--        #output-table th, #output-table td {-->
+<!--            border: 1px solid black;-->
+<!--            padding: 8px;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <h2>Face Recognition Attendance</h2>-->
+
+<!--    &lt;!&ndash; Image Upload Section &ndash;&gt;-->
+<!--    <input type="file" id="imageInput" accept="image/*">-->
+<!--    <button onclick="uploadImage()">Upload & Recognize</button>-->
+<!--    <br><br>-->
+
+<!--    &lt;!&ndash; Webcam-Based Recognition Section &ndash;&gt;-->
+<!--    <video id="video" autoplay></video>-->
+<!--    <br>-->
+<!--    <button onclick="startRecognition()">Start Recognition</button>-->
+<!--    <button onclick="stopRecognition()">Stop Recognition</button>-->
+
+<!--    <h3>Recognized Faces</h3>-->
+<!--    <table id="output-table">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Confidence (%)</th>-->
+<!--                <th>Bounding Box (x, y, w, h)</th>-->
+<!--                <th>Timestamp</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="output-body">-->
+<!--            &lt;!&ndash; Recognized data will be inserted here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--    <script>-->
+<!--        let videoStream = null;-->
+<!--        let recognitionInterval = null;-->
+<!--        const video = document.getElementById("video");-->
+
+<!--        function uploadImage() {-->
+<!--            let fileInput = document.getElementById("imageInput");-->
+<!--            if (fileInput.files.length === 0) {-->
+<!--                alert("Please select an image.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            let file = fileInput.files[0];-->
+<!--            let formData = new FormData();-->
+<!--            formData.append("file", file);-->
+
+<!--            fetch("http://127.0.0.1:8000/recognize", {-->
+<!--                method: "POST",-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                appendToTable(data.recognized_faces, data.timestamp);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error("Error:", error);-->
+<!--                alert("Error recognizing the image.");-->
+<!--            });-->
+<!--        }-->
+
+<!--        async function startCamera() {-->
+<!--            try {-->
+<!--                videoStream = await navigator.mediaDevices.getUserMedia({ video: true });-->
+<!--                video.srcObject = videoStream;-->
+<!--            } catch (error) {-->
+<!--                console.error("Error accessing webcam:", error);-->
+<!--                alert("Could not access webcam.");-->
+<!--            }-->
+<!--        }-->
+
+<!--        function captureFrame() {-->
+<!--            let canvas = document.createElement("canvas");-->
+<!--            canvas.width = video.videoWidth;-->
+<!--            canvas.height = video.videoHeight;-->
+<!--            let ctx = canvas.getContext("2d");-->
+<!--            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);-->
+<!--            canvas.toBlob(sendFrame, "image/jpeg");-->
+<!--        }-->
+
+<!--        function sendFrame(blob) {-->
+<!--            let formData = new FormData();-->
+<!--            formData.append("file", blob, "frame.jpg");-->
+
+<!--            fetch("http://127.0.0.1:8000/recognize", {-->
+<!--                method: "POST",-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                appendToTable(data.recognized_face, data.timestamp);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error("Error:", error);-->
+<!--            });-->
+<!--        }-->
+
+<!--        function appendToTable(recognizedFaces, timestamp) {-->
+<!--            let tableBody = document.getElementById("output-body");-->
+<!--            tableBody.innerHTML = "";  // Clear old data-->
+
+<!--            if (recognizedFaces.length === 0) {-->
+<!--                let row = `<tr><td colspan="4">No faces recognized.</td></tr>`;-->
+<!--                tableBody.innerHTML += row;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            recognizedFaces.forEach(face => {-->
+<!--                let row = `-->
+<!--                    <tr>-->
+<!--                        <td>${face.name || "Unknown"}</td>-->
+<!--                        <td>${face.confidence.toFixed(2)}</td>-->
+<!--                        <td>(${face.bounding_box.join(", ")})</td>-->
+<!--                        <td>${timestamp}</td>-->
+<!--                    </tr>-->
+<!--                `;-->
+<!--                tableBody.innerHTML += row;-->
+<!--            });-->
+<!--        }-->
+
+<!--        function startRecognition() {-->
+<!--            if (!videoStream) {-->
+<!--                alert("Starting camera...");-->
+<!--                startCamera();-->
+<!--            }-->
+<!--            recognitionInterval = setInterval(captureFrame, 2000);-->
+<!--        }-->
+
+<!--        function stopRecognition() {-->
+<!--            clearInterval(recognitionInterval);-->
+<!--            if (videoStream) {-->
+<!--                videoStream.getTracks().forEach(track => track.stop());-->
+<!--                video.srcObject = null;-->
+<!--                videoStream = null;-->
+<!--            }-->
+<!--        }-->
+
+<!--        window.onload = startCamera;-->
+<!--    </script>-->
+
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+torch
+ultralytics
+scikit-learn
+numpy
+pickle5
+opencv-python
+keras-facenet
+insightface
+joblib
+python-multipart
