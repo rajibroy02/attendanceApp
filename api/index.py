@@ -6,23 +6,28 @@ import os
 
 app = FastAPI()
 
-# Serve static files (CSS/JS) if needed
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Serve static files if needed
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Load Jinja2 templates (points to your "templates" folder)
-templates = Jinja2Templates(directory="templates")
+# Setup templates
+templates = Jinja2Templates(directory="../templates")
 
-# Import your FastAPI app (from app.py)
-from ..app import app as fastapi_app
+# Import your main app
+try:
+    from ..app import app as fastapi_app
+    app.mount("/api", fastapi_app)
+except ImportError:
+    @app.get("/api/test")
+    async def test():
+        return {"message": "API is working"}
 
-# Mount APIs under "/api" (optional but organized)
-app.mount("/api", fastapi_app)  # APIs: https://your-app.vercel.app/api/...
-
-# Serve index.html at root ("/")
+# Root endpoint
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
+async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+# Vercel handler
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
